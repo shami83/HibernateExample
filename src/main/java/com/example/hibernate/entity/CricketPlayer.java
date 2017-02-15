@@ -1,19 +1,20 @@
 package com.example.hibernate.entity;
 
-import javax.persistence.CascadeType;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "PLAYER", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
-public class BadmintonPlayer {
+public class CricketPlayer {
 	
 	@Id
 	private long id;
@@ -23,9 +24,12 @@ public class BadmintonPlayer {
 	@Column(name = "SPORTS_NAME", unique = false, nullable = false, length = 100)
 	private String sports;// Not separate  Sports in a different table for sake of simplicity
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn
-	private Country country;
+	@ManyToMany
+	@JoinTable(name = "PLAYER_TEAM", joinColumns = {
+			@JoinColumn(name = "PLAYER_ID", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "TEAM_ID",
+					nullable = false, updatable = false) })
+	private Set<Team> teams = new HashSet<Team>();
 
 	public long getId() {
 		return id;
@@ -51,18 +55,19 @@ public class BadmintonPlayer {
 		this.sports = sports;
 	}
 
-	public Country getCountry() {
-		return country;
-	}
+	
 
-	public void setCountry(Country country) {
-		this.country = country;
+	
+	public void addTeam(Team team) {
+		teams.add(team);
 	}
 
 	@Override
 	public String toString() {
-		return "BadmintonPlayer [id=" + id + ", name=" + name + ", sports=" + sports + ", country=" + country + "]";
+		return "CricketPlayer [id=" + id + ", name=" + name + ", sports=" + sports + ", team=" + teams + "]";
 	}
+
+	
 	
 
 }

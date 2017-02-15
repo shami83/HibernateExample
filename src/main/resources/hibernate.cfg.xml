@@ -14,7 +14,16 @@
         <property name="hibernate.hbm2ddl.auto">create</property>    
         <mapping class="com.example.hibernate.entity.Employee"/>
         <mapping class="com.example.hibernate.entity.Country"/>
+        <mapping class="com.example.hibernate.entity.India"/>
         <mapping class="com.example.hibernate.entity.Player"/>
         <mapping class="com.example.hibernate.entity.BadmintonPlayer"/>
+        <mapping class="com.example.hibernate.entity.CricketPlayer"/>
+        <mapping class="com.example.hibernate.entity.IndianPlayer"/>
+        <mapping class="com.example.hibernate.entity.Team"/>
+         <mapping class="com.example.hibernate.entity.Company"/>
+        <mapping class="com.example.hibernate.entity.NationalCompany"/>
+        <mapping class="com.example.hibernate.entity.MultinationalCompany"/>
+         <mapping class="com.example.hibernate.entity.JobSeeker"/>
+        <mapping class="com.example.hibernate.entity.Address"/>
     </session-factory>
 </hibernate-configuration>

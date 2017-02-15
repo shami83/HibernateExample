@@ -5,7 +5,9 @@ import org.hibernate.Session;
 import com.example.hibernate.core.HibernateUtil;
 import com.example.hibernate.entity.BadmintonPlayer;
 import com.example.hibernate.entity.Country;
+import com.example.hibernate.entity.CricketPlayer;
 import com.example.hibernate.entity.Player;
+import com.example.hibernate.entity.Team;
 
 public class AssociationTest {
 	
@@ -13,7 +15,8 @@ public static void main(String[] args) {
 	AssociationTest test = new AssociationTest();
 	//test.manyToOne();
 	//test.oneToOne();
-	test.oneToMany();
+	//test.oneToMany();
+	test.manyTomany();
 	
 	}
 
@@ -44,6 +47,15 @@ public void manyToOne(){
 	System.out.println(player2);
 	session.close();
 }
+
+public void manyTomany(){
+	Session session = HibernateUtil.getSessionFactory().openSession();
+	insertTeams();
+	insertCricketPlayer();
+	CricketPlayer player = findEntityById(1L, CricketPlayer.class, session);
+	System.out.println(player);
+	session.close();
+}
 	
 	public void insertCountry() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -52,6 +64,24 @@ public void manyToOne(){
 		country.setId(1L);;
 		country.setName("INDIA");		
 		session.save(country);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+
+	public void insertTeams() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		Team  team = new Team();
+		team.setId(1L);;
+		team.setName("KKR");	
+		
+		Team  team1 = new Team();
+		team1.setId(2L);
+		team1.setName("TRINIDAD");
+		
+		session.save(team);
+		session.save(team1);
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -64,6 +94,22 @@ public void manyToOne(){
 		player.setName("PV SINDHU");
 		player.setSports("Badminton");
 		player.setCountry(country);		
+		session.save(player);
+		session.getTransaction().commit();
+		session.close();
+	}
+	
+	public void insertCricketPlayer() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		CricketPlayer player = new CricketPlayer();
+		Team  team1 = this.findEntityById(1L, Team.class , session);
+		Team  team2 = this.findEntityById(2L, Team.class , session);
+		player.setId(1L);;
+		player.setName("Sunil Narine");
+		player.setSports("Cricket");
+		player.addTeam(team1);
+		player.addTeam(team2);
 		session.save(player);
 		session.getTransaction().commit();
 		session.close();
